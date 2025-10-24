@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333;">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center">
+                <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border: 1px solid #dddddd; border-radius: 8px; max-width: 600px;">
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 20px 0; border-bottom: 1px solid #dddddd;">
+                            <h1 style="margin: 0; color: #333333;">ArtGallery</h1>
+                            <p style="margin: 5px 0 0; color: #666666;">Thank you for your purchase!</p>
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 30px 20px;">
+                            <h2 style="color: #333333; margin-top: 0;">Order Confirmation #{{ order.id }}</h2>
+                            <p style="color: #555555; line-height: 1.5;">Hello {{ user.username }},<br>We've received your order and are getting it ready. Here are the details:</p>
+
+                            <!-- Order Items Table -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 20px; border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #eeeeee;">Item</th>
+                                        <th style="text-align: right; padding: 8px; border-bottom: 2px solid #eeeeee;">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items %}
+                                    <tr>
+                                        <td style="padding: 12px 8px; border-bottom: 1px solid #eeeeee;">
+                                            {{ item.artwork_item.title }}
+                                            <br>
+                                            <small style="color: #777;">by {{ item.artwork_item.artist.username }}</small>
+                                        </td>
+                                        <td style="text-align: right; padding: 12px 8px; border-bottom: 1px solid #eeeeee;">${"%.2f"|format(item.price_at_purchase)}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td style="text-align: right; padding: 15px 8px 5px; font-weight: bold;">Total:</td>
+                                        <td style="text-align: right; padding: 15px 8px 5px; font-weight: bold; color: #28a745;">${"%.2f"|format(order.total_amount)}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <p style="color: #555555; margin-top: 30px;">You can view your complete order history by visiting your profile on our website.</p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; border-top: 1px solid #dddddd; background-color: #f9f9f9;">
+                            <p style="margin: 0; color: #888888; font-size: 12px;">&copy; {{ now.year }} ArtGallery. All Rights Reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

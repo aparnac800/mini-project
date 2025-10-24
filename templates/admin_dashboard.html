@@ -1,0 +1,98 @@
+{% extends "art.html" %}
+
+{% block content %}
+<section id="admin-dashboard" class="py-5 bg-light" style="padding-top: 80px !important;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 class="mb-0"><i class="fas fa-user-shield me-3"></i>Admin Dashboard</h2>
+        </div>
+
+        <div class="card shadow-sm mb-5">
+            <div class="card-header">
+                <h5 class="mb-0">User Management</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr id="user-row-{{ user.id }}">
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td><span class="badge bg-secondary">{{ user.role }}</span></td>
+                                <td class="text-end">
+                                    {% if user.id != current_user.id %} {# Prevent admin from deleting themselves #}
+                                    <button class="btn btn-sm btn-outline-danger delete-user-btn" data-user-id="{{ user.id }}" data-username="{{ user.username }}">
+                                        <i class="fas fa-trash-alt me-1"></i>Delete
+                                    </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Order Management</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr id="order-row-{{ order.id }}">
+                                <td>#{{ order.id }}</td>
+                                <td>{{ order.customer.username }}</td>
+                                <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
+                                <td class="text-end">${"%.2f"|format(order.total_amount)}}</td>
+                                <td class="text-center">
+                                    <span id="status-badge-{{ order.id }}" class="badge bg-info">{{ order.status }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Change Status
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item update-status-btn" href="#" data-order-id="{{ order.id }}" data-status="pending">Pending</a></li>
+                                            <li><a class="dropdown-item update-status-btn" href="#" data-order-id="{{ order.id }}" data-status="completed">Completed</a></li>
+                                            <li><a class="dropdown-item update-status-btn" href="#" data-order-id="{{ order.id }}" data-status="shipped">Shipped</a></li>
+                                            <li><a class="dropdown-item update-status-btn" href="#" data-order-id="{{ order.id }}" data-status="cancelled">Cancelled</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
